@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}admin_report{% endblock %}
+{% if user.is_authenticated %}
+                        {% block nav_report_admin_active %}active{% endblock %}
+{% endif %}
+{% block content %}
+    <div class="containter">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                {% if user.is_authenticated %}
+                <table class="table table-bordered table-hover">
+{#                    <span style="margin-right: 1em"><a href="{% url 'order_append' %}">新增订单</a></span>#}
+                    <span><a href="{% url 'att_list' %}">查找</a></span>
+                  <thead>
+                    <tr>
+                      <th scope="col">员工姓名</th>
+                        <th scope="col">所获工资</th>
+                      <th scope="col">工作时长</th>
+
+{#                         <th scope="col">修改</th>#}
+{#                      <th scope="col">删除</th>#}
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {%for r in res%}
+                    <tr>
+                      <td>{{ r.name }}</td>
+                      <td>{{ r.tot_sal}}</td>
+                      <td>{{ r.tot_time }}</td>
+
+{#                           <td><a href="{% url 'att_modify' order.pk%}">修改</a></td>#}
+{#                      <td><a href="{% url 'att_delete' order.pk%}">删除</a></td>#}
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                    <form action="{% url 'run_payroll' %}" method="get">
+                    <input type="submit" value="确认支付" class="btn btn-primary pull-right">
+                    </form>
+
+                {% else %}
+                    <span>未登录，跳转到首页...</span>
+                    <script type="text/javascript">
+                        window.location.href = '/';
+                    </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

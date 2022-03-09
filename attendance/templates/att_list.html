@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}考勤记录{% endblock %}
+{% if user.is_authenticated %}
+                        {% block nav_attendance_active %}active{% endblock %}
+{% endif %}
+{% block content %}
+    <div class="containter">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                {% if user.is_authenticated %}
+                <table class="table table-bordered table-hover">
+{#                    <span style="margin-right: 1em"><a href="{% url 'order_append' %}">新增订单</a></span>#}
+{#                    <span><a href="{% url 'att_list' %}">查找</a></span>#}
+                  <thead>
+                    <tr>
+                      <th scope="col">员工姓名</th>
+                        <th scope="col">日期</th>
+                      <th scope="col">工作时长</th>
+                      <th scope="col">参与项目</th>
+{#                         <th scope="col">修改</th>#}
+{#                      <th scope="col">删除</th>#}
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {%for att in att_list%}
+                    <tr>
+                      <td>{{att.get_user_name}}</td>
+                      <td>{{att.att_date}}</td>
+                      <td>{{att.work_time}}</td>
+                      <td>{{att.get_proj_name}}</td>
+{#                           <td><a href="{% url 'att_modify' order.pk%}">修改</a></td>#}
+{#                      <td><a href="{% url 'att_delete' order.pk%}">删除</a></td>#}
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                    <span>未登录，跳转到首页...</span>
+                    <script type="text/javascript">
+                        window.location.href = '/';
+                    </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

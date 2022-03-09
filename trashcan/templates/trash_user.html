@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}全体员工{% endblock %}
+{% if user.is_authenticated %}
+                    {% if user_get_staff_type == '管理员' %}
+                        {% block nav_staff_active %}active{% endblock %}
+                    {% else %}
+                        {% block nav_staff1_active %}active{% endblock %}
+                    {% endif %}
+{% endif %}
+{% block content %}
+    <div class="containter">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+
+                {% if user.is_authenticated %}
+                <table class="table table-bordered table-hover">
+
+                    {% if user.get_staff_type == '管理员' %}
+{#                    <a href="{% url 'user_select' %}">搜索</a>#}
+                  <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                      <th scope="col">姓名</th>
+                      <th scope="col">类型</th>
+                      <th scope="col">性别</th>
+                      <th scope="col">年龄</th>
+                      <th scope="col">电话</th>
+                        <th scope="col">邮寄地址</th>
+                      <th scope="col">身份证号</th>
+{#                      <th scope="col">入职时间</th>#}
+                      <th scope="col">时薪</th>
+                        <th scope="col">工资</th>
+                        <th scope="col">佣金率</th>
+                        <th scope="col">减税率</th>
+                        <th scope="col">其他扣除</th>
+                        <th scope="col">工时限制</th>
+{#                        <th scope="col">修改</th>#}
+                      <th scope="col">删除</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {%for u in users%}
+                    <tr>
+                      <td>{{u.pk}}</td>
+                      <td>{{u.u_name}}</td>
+                      <td>{{u.staff_type}}</td>
+                      <td>{{u.staff_gender}}</td>
+                      <td>{{u.staff_age}}</td>
+                      <td>{{u.staff_tel}}</td>
+                        <td>{{u.mail_addr}}</td>
+                       <td>{{u.id_card}}</td>
+{#                      <td>{{u.get_start_time}}</td>#}
+                      <td>{{u.salary_pre_hour}}</td>
+                        <td>{{u.salary}}</td>
+                        <td>{{u.com_rate}}</td>
+                        <td>{{u.std_tax_d}}</td>
+                        <td>{{u.other_d}}</td>
+                        <td>{{u.hour_limit}}</td>
+{#                        <td><a href="{% url 'user_modify' u.pk%}">修改</a></td>#}
+                      <td><a href="{% url 'pro_delete' u.pk%}" onclick="return confirm('永久删除？');">删除</a></td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                    {% endif %}
+                </table>
+                {% else %}
+                    <span>未登录，跳转到首页...</span>
+                    <script type="text/javascript">
+                        window.location.href = '/';
+                    </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

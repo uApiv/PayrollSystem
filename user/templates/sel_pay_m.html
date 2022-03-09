@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}修改支付方式{% endblock %}
+
+{% block content %}
+    <body onload="on_load_selp()"></body>
+    <script>
+        function on_load_selp(){
+            document.getElementById('id_submit').setAttribute('disabled', 'disabled')
+            idx=document.getElementById('id_method').selectedIndex
+            var val = document.getElementById('id_method').options[idx].value;
+            if(val==='直接领取'){
+                document.getElementById('id_mail').setAttribute('disabled', 'disabled')
+                document.getElementById('id_bank_name').setAttribute('disabled', 'disabled')
+                document.getElementById('id_account').setAttribute('disabled', 'disabled')
+            }
+            else if(val==='邮寄'){
+                document.getElementById('id_mail').removeAttribute('disabled')
+                document.getElementById('id_bank_name').setAttribute('disabled', 'disabled')
+                document.getElementById('id_account').setAttribute('disabled', 'disabled')
+            }
+            else if(val==='存入银行'){
+                document.getElementById('id_mail').setAttribute('disabled', 'disabled')
+                document.getElementById('id_bank_name').removeAttribute('disabled')
+                document.getElementById('id_account').removeAttribute('disabled')
+            }
+        }
+    </script>
+    <div class="containter">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                {% if user.is_authenticated %}
+                    <div class="panel panel-default" style="margin-top: 2em">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">支付</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {% for field in pay_m_sel_form %}
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field }}
+                                    <p class="text-danger">{{ field.errors.as_text }}</p>
+                                {% endfor %}
+                                <span class="text-danger">{{ login_form.non_field_errors }}</span>
+                                <div class="clearfix" style="text-align:center">
+                                    <input type="button" value="取消" class="btn btn-primary pull-left">
+                                    <input type="button" value="修改" class="btn btn-primary"
+                                           onclick="document.getElementById('id_submit').removeAttribute('disabled')">
+                                    <input type="submit" value="提交" id="id_submit" class="btn btn-primary pull-right">
+                                </div>
+                            </form>
+                        <script>
+                            function func_change(){
+                                idx=document.getElementById('id_method').selectedIndex
+                                var val = document.getElementById('id_method').options[idx].value;
+                                if(val==='直接领取'){
+                                    document.getElementById('id_mail').setAttribute('disabled', 'disabled')
+                                    document.getElementById('id_bank_name').setAttribute('disabled', 'disabled')
+                                    document.getElementById('id_account').setAttribute('disabled', 'disabled')
+                                }
+                                else if(val==='邮寄'){
+                                    document.getElementById('id_mail').removeAttribute('disabled')
+                                    document.getElementById('id_bank_name').setAttribute('disabled', 'disabled')
+                                    document.getElementById('id_account').setAttribute('disabled', 'disabled')
+                                }
+                                else if(val==='存入银行'){
+                                    document.getElementById('id_mail').setAttribute('disabled', 'disabled')
+                                    document.getElementById('id_bank_name').removeAttribute('disabled')
+                                    document.getElementById('id_account').removeAttribute('disabled')
+                                }
+                            }
+                        </script>
+                        </div>
+                    </div>
+                {% else %}
+                    <script type="text/javascript">
+                        window.location.href = '/';
+                    </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

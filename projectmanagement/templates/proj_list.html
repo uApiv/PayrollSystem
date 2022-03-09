@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}所有项目{% endblock %}
+{% if user.is_authenticated %}
+                    {% if user_get_staff_type == '管理员' %}
+                        {% block nav_proj_mana_active %}active{% endblock %}
+                    {% else %}
+                        {% block nav_staff1_active %}active{% endblock %}
+                    {% endif %}
+{% endif %}
+{% block content %}
+    <div class="containter">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                {% if user.is_authenticated %}
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                      <th scope="col">项目名</th>
+                      <th scope="col">项目金额</th>
+                        <th scope="col">修改</th>
+                      <th scope="col">删除</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {%for p in projs%}
+                    <tr>
+                      <td>{{p.pk}}</td>
+                      <td>{{p.proj_name}}</td>
+                      <td>{{p.proj_value}}</td>
+                        <td><a href="{% url 'project_modify' p.pk%}">修改</a></td>
+                      <td><a href="{% url 'project_delete' p.pk%}" onclick="return confirm('确认删除？');">删除</a></td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                    <span>未登录，跳转到首页...</span>
+                    <script type="text/javascript">
+                        window.location.href = '/';
+                    </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
